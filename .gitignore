@@ -1,0 +1,40 @@
+# .gitignore para WordPress
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Archivos de configuración locales
+wp-config.php
+wp-config-local.php
+local-xdebuginfo.php
+
+# Directorios de WordPress
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backups/
+wp-content/backup-*/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/object-cache.php
+
+# Plugins y themes personalizados (opcional)
+# wp-content/plugins/
+# wp-content/themes/
+
+# Archivos de base de datos
+*.sql
+*.sqlite
+*.db
+
+# Archivos de entorno
+.env
+.env.*
+
+# Archivos de usuario
+.sftp.json
+ftp-*.json
