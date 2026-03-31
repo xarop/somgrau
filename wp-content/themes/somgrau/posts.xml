@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+    xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:wp="http://wordpress.org/export/1.2/"
+>
+
+<channel>
+    <title>Som Grau</title>
+    <link>http://somgrau.cat</link>
+    <description>Plataforma de reivindicació per als dissenyadors pre-Bolonya</description>
+    <pubDate>Tue, 31 Mar 2026 10:00:00 +0000</pubDate>
+    <language>ca</language>
+    <wp:wxr_version>1.2</wp:wxr_version>
+
+    <item>
+        <title>Neixem per dir PROU: El manifest de Som Grau</title>
+        <link>http://somgrau.cat/manifest-som-grau/</link>
+        <pubDate>Tue, 31 Mar 2026 09:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[admin]]></dc:creator>
+        <content:encoded><![CDATA[<p><strong>Neixem per dir PROU. Som Grau.</strong> No som una simple associació, som la veu d'una generació de professionals del disseny que ha quedat en els llimbs acadèmics.</p>
+        <p>Vivim una situació real d’indefensió i de desigualtat d’oportunitats. Mentre el mercat avança, els nostres títols semblen haver-se aturat en el temps per una qüestió administrativa i no de competència professional.</p>
+        <blockquote>Reivindiquem el nostre lloc en l'ecosistema actual.</blockquote>]]></content:encoded>
+        <excerpt:encoded><![CDATA[Diem prou a la desigualtat d'oportunitats dels dissenyadors gràfics titulats abans del Pla Bolonya.]]></excerpt:encoded>
+        <wp:post_id>301</wp:post_id>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <category domain="category" nicename="manifest"><![CDATA[Manifest]]></category>
+    </item>
+
+    <item>
+        <title>L'assignatura pendent de l'Escola Pública</title>
+        <link>http://somgrau.cat/escola-publica-oportunitat-perduda/</link>
+        <pubDate>Mon, 30 Mar 2026 12:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[redaccio]]></dc:creator>
+        <content:encoded><![CDATA[<p>Ens preguntem: <strong>Per què l’escola pública no ens va oferir aquesta oportunitat?</strong> Som tots aquells alumnes que vam estudiar Disseny Gràfic abans de la implantació del Pla Bolonya i que ens vam quedar sense un pont clar cap al Grau actual.</p>
+        <p>Som dissenyadors gràfics amb anys d'experiència i tenim dret a evolucionar professionalment. La formació pública ens hauria de protegir, no excloure.</p>]]></content:encoded>
+        <excerpt:encoded><![CDATA[Una reflexió sobre el paper de l'ensenyament públic en la transició cap al Pla Bolonya per als dissenyadors.]]></excerpt:encoded>
+        <wp:post_id>302</wp:post_id>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <category domain="category" nicename="opinio"><![CDATA[Opinió]]></category>
+        <category domain="post_tag" nicename="pla-bolonya"><![CDATA[Pla Bolonya]]></category>
+    </item>
+
+    <item>
+        <title>Cap a un consens: No volem màgia, volem fórmules</title>
+        <link>http://somgrau.cat/consens-sector-disseny/</link>
+        <pubDate>Sun, 29 Mar 2026 10:30:00 +0000</pubDate>
+        <dc:creator><![CDATA[redaccio]]></dc:creator>
+        <content:encoded><![CDATA[<p>No pretenem solucions màgiques, sinó fórmules de consens. La nostra lluita no és contra el sistema, sinó per la integració dins d'ell. Volem que tots els agents del sector s’hi impliquin: escoles, col·legis professionals i administració.</p>
+        <p>Reivindiquem una passarel·la justa. Som actius, som professionals i, per damunt de tot, <strong>Som Grau</strong>.</p>]]></content:encoded>
+        <excerpt:encoded><![CDATA[Crida a la implicació de tots els agents del sector per trobar solucions reals a la nostra situació.]]></excerpt:encoded>
+        <wp:post_id>303</wp:post_id>
+        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:post_type><![CDATA[post]]></wp:post_type>
+        <category domain="category" nicename="reivindicacio"><![CDATA[Reivindicació]]></category>
+    </item>
+
+</channel>
+</rss>

@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "settings": {
+    "color": {
+      "palette": [
+        { "name": "Principal", "slug": "primary", "color": "#cf2e2e" },
+        { "name": "Principal Oscuro", "slug": "primary-dark", "color": "#a62626" },
+        { "name": "Principal Claro", "slug": "primary-light", "color": "#f25a5a" },
+        { "name": "Secundario", "slug": "secondary", "color": "#2e5ccf" },
+        { "name": "Verde WhatsApp", "slug": "whatsapp", "color": "#25D366" },
+        { "name": "Gris 100", "slug": "gray-100", "color": "#f8f9fa" },
+        { "name": "Gris 200", "slug": "gray-200", "color": "#e9ecef" },
+        { "name": "Gris 300", "slug": "gray-300", "color": "#dee2e6" },
+        { "name": "Gris 400", "slug": "gray-400", "color": "#ced4da" },
+        { "name": "Gris 500", "slug": "gray-500", "color": "#adb5bd" },
+        { "name": "Gris 600", "slug": "gray-600", "color": "#6c757d" },
+        { "name": "Gris 700", "slug": "gray-700", "color": "#495057" },
+        { "name": "Gris 800", "slug": "gray-800", "color": "#343a40" },
+        { "name": "Gris 900", "slug": "gray-900", "color": "#212529" }
+      ]
+    }
+  }
+}
