@@ -104,6 +104,13 @@ function xarop_maintenance_register_settings()
         'default'           => 0,
         ]
     );
+    register_setting(
+        'xarop_maintenance_group', 'xarop_maintenance_redirect_mode', [
+        'type'              => 'string',
+        'sanitize_callback' => function ($v) { return in_array($v, ['redirect', 'frame'], true) ? $v : 'redirect'; },
+        'default'           => 'redirect',
+        ]
+    );
 }
 
 // Admin menu page under Settings
@@ -177,12 +184,26 @@ function xarop_maintenance_settings_page()
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="xarop_maintenance_redirect_url"><?php esc_html_e('Redirect URL', 'xarop'); ?></label></th>
+                    <th scope="row"><label for="xarop_maintenance_redirect_url"><?php esc_html_e('External URL', 'xarop'); ?></label></th>
                     <td>
                         <input type="url" id="xarop_maintenance_redirect_url" name="xarop_maintenance_redirect_url"
                             value="<?php echo esc_attr(get_option('xarop_maintenance_redirect_url', '')); ?>"
                             class="regular-text" placeholder="https://example.com" />
-                        <p class="description"><?php esc_html_e('If set, visitors will be redirected to this URL instead of seeing the maintenance page.', 'xarop'); ?></p>
+                        <p class="description"><?php esc_html_e('If set, visitors will be sent to this URL instead of seeing the maintenance page.', 'xarop'); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e('URL Mode', 'xarop'); ?></th>
+                    <td>
+                        <?php $mode = get_option('xarop_maintenance_redirect_mode', 'redirect'); ?>
+                        <label style="display:block;margin-bottom:.4rem">
+                            <input type="radio" name="xarop_maintenance_redirect_mode" value="redirect" <?php checked('redirect', $mode); ?> />
+                            <?php esc_html_e('Redirect — send the visitor to the URL (browser address bar changes)', 'xarop'); ?>
+                        </label>
+                        <label style="display:block">
+                            <input type="radio" name="xarop_maintenance_redirect_mode" value="frame" <?php checked('frame', $mode); ?> />
+                            <?php esc_html_e('Frame — load the URL in a full-page iframe (browser address bar stays the same)', 'xarop'); ?>
+                        </label>
                     </td>
                 </tr>
                 <tr>
@@ -191,7 +212,7 @@ function xarop_maintenance_settings_page()
                         <input type="number" id="xarop_maintenance_redirect_delay" name="xarop_maintenance_redirect_delay"
                             value="<?php echo esc_attr(get_option('xarop_maintenance_redirect_delay', 0)); ?>"
                             min="0" step="1" class="small-text" />
-                        <p class="description"><?php esc_html_e('Seconds to wait before redirecting. 0 = immediate. Only applies when a Redirect URL is set.', 'xarop'); ?></p>
+                        <p class="description"><?php esc_html_e('Seconds to wait before redirecting. 0 = immediate. Only applies in Redirect mode.', 'xarop'); ?></p>
                     </td>
                 </tr>
             </table>
@@ -218,6 +239,23 @@ function xarop_maintenance_redirect()
 
     $redirect_url   = get_option('xarop_maintenance_redirect_url', '');
     $redirect_delay = (int) get_option('xarop_maintenance_redirect_delay', 0);
+    $redirect_mode  = get_option('xarop_maintenance_redirect_mode', 'redirect');
+    if ($redirect_url && $redirect_mode === 'frame') {
+        nocache_headers();
+        ?><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <style>*{margin:0;padding:0}html,body,iframe{width:100%;height:100%;border:none;display:block}</style>
+</head>
+<body>
+    <iframe src="<?php echo esc_url($redirect_url); ?>" title=""></iframe>
+</body>
+</html>
+        <?php
+        exit();
+    }
     if ($redirect_url) {
         if ($redirect_delay === 0) {
             wp_redirect(esc_url_raw($redirect_url), 302);
