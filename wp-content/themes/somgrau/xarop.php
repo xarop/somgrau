@@ -97,6 +97,13 @@ function xarop_maintenance_register_settings()
         'default'           => '',
         ]
     );
+    register_setting(
+        'xarop_maintenance_group', 'xarop_maintenance_redirect_delay', [
+        'type'              => 'integer',
+        'sanitize_callback' => 'absint',
+        'default'           => 0,
+        ]
+    );
 }
 
 // Admin menu page under Settings
@@ -178,6 +185,15 @@ function xarop_maintenance_settings_page()
                         <p class="description"><?php esc_html_e('If set, visitors will be redirected to this URL instead of seeing the maintenance page.', 'xarop'); ?></p>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row"><label for="xarop_maintenance_redirect_delay"><?php esc_html_e('Redirect Delay (seconds)', 'xarop'); ?></label></th>
+                    <td>
+                        <input type="number" id="xarop_maintenance_redirect_delay" name="xarop_maintenance_redirect_delay"
+                            value="<?php echo esc_attr(get_option('xarop_maintenance_redirect_delay', 0)); ?>"
+                            min="0" step="1" class="small-text" />
+                        <p class="description"><?php esc_html_e('Seconds to wait before redirecting. 0 = immediate. Only applies when a Redirect URL is set.', 'xarop'); ?></p>
+                    </td>
+                </tr>
             </table>
             <?php submit_button(); ?>
         </form>
@@ -200,9 +216,86 @@ function xarop_maintenance_redirect()
         return;
     }
 
-    $redirect_url = get_option('xarop_maintenance_redirect_url', '');
+    $redirect_url   = get_option('xarop_maintenance_redirect_url', '');
+    $redirect_delay = (int) get_option('xarop_maintenance_redirect_delay', 0);
     if ($redirect_url) {
-        wp_redirect(esc_url_raw($redirect_url), 302);
+        if ($redirect_delay === 0) {
+            wp_redirect(esc_url_raw($redirect_url), 302);
+            exit();
+        }
+        // Delay > 0: show maintenance page with countdown then redirect
+        $title      = get_option('xarop_maintenance_title', 'Site under maintenance');
+        $message    = get_option('xarop_maintenance_message', 'We are doing some maintenance work. Please check back soon.');
+        $hide_login = get_option('xarop_maintenance_hide_login', false);
+        nocache_headers();
+        ?><!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="refresh" content="<?php echo esc_attr($redirect_delay); ?>; url=<?php echo esc_url($redirect_url); ?>">
+    <title><?php echo esc_html($title); ?></title>
+    <style>
+        :root {
+            --xarop-primary:      <?php echo esc_html(XAROP_COLOR_PRIMARY); ?>;
+            --xarop-primary-dark: <?php echo esc_html(XAROP_COLOR_PRIMARY_DARK); ?>;
+            --xarop-bg:           <?php echo esc_html(XAROP_COLOR_BG); ?>;
+            --xarop-text:         <?php echo esc_html(XAROP_COLOR_TEXT); ?>;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--xarop-bg);
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 2rem;
+        }
+        .maintenance-box {
+            background: #fff; border-radius: 8px;
+            box-shadow: 0 4px 24px rgba(0,0,0,.10);
+            padding: 3rem 2.5rem; max-width: 520px; width: 100%; text-align: center;
+        }
+        .maintenance-box h1 { font-size: 1.75rem; color: var(--xarop-primary); margin-bottom: 1rem; }
+        .maintenance-box .message { font-size: 1rem; color: var(--xarop-text); line-height: 1.6; }
+        .countdown { margin-top: 1.5rem; font-size: .9rem; color: var(--xarop-text); opacity: .7; }
+        .login-link {
+            display: inline-block; margin-top: 2rem; padding: .6rem 1.4rem;
+            background: var(--xarop-primary); color: #fff; border-radius: 4px;
+            text-decoration: none; font-size: .9rem;
+        }
+        .login-link:hover { background: var(--xarop-primary-dark); }
+    </style>
+</head>
+<body>
+    <div class="maintenance-box">
+        <h1><?php echo esc_html($title); ?></h1>
+        <div class="message"><?php echo wp_kses_post(wpautop($message)); ?></div>
+        <p class="countdown" id="xarop-countdown"></p>
+        <?php if (! $hide_login) : ?>
+        <a href="<?php echo esc_url(wp_login_url(home_url('/'))); ?>" class="login-link">
+            <?php esc_html_e('Log in', 'xarop'); ?>
+        </a>
+        <?php endif; ?>
+    </div>
+    <script>
+    (function () {
+        var secs = <?php echo (int) $redirect_delay; ?>;
+        var url  = <?php echo wp_json_encode(esc_url_raw($redirect_url)); ?>;
+        var el   = document.getElementById('xarop-countdown');
+        function tick() {
+            el.textContent = secs > 0
+                ? 'Sereu redirigits en ' + secs + ' segon' + (secs === 1 ? '' : 's') + '…'
+                : 'Redirigint…';
+            if (secs <= 0) { window.location.replace(url); return; }
+            secs--;
+            setTimeout(tick, 1000);
+        }
+        tick();
+    })();
+    </script>
+</body>
+</html>
+        <?php
         exit();
     }
 
