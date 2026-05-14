@@ -90,6 +90,13 @@ function xarop_maintenance_register_settings()
         'default'           => false,
         ]
     );
+    register_setting(
+        'xarop_maintenance_group', 'xarop_maintenance_redirect_url', [
+        'type'              => 'string',
+        'sanitize_callback' => 'esc_url_raw',
+        'default'           => '',
+        ]
+    );
 }
 
 // Admin menu page under Settings
@@ -162,6 +169,15 @@ function xarop_maintenance_settings_page()
                         </label>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row"><label for="xarop_maintenance_redirect_url"><?php esc_html_e('Redirect URL', 'xarop'); ?></label></th>
+                    <td>
+                        <input type="url" id="xarop_maintenance_redirect_url" name="xarop_maintenance_redirect_url"
+                            value="<?php echo esc_attr(get_option('xarop_maintenance_redirect_url', '')); ?>"
+                            class="regular-text" placeholder="https://example.com" />
+                        <p class="description"><?php esc_html_e('If set, visitors will be redirected to this URL instead of seeing the maintenance page.', 'xarop'); ?></p>
+                    </td>
+                </tr>
             </table>
             <?php submit_button(); ?>
         </form>
@@ -182,6 +198,12 @@ function xarop_maintenance_redirect()
     // Allow wp-login.php and wp-cron.php to work normally
     if (is_admin() || $GLOBALS['pagenow'] === 'wp-login.php') {
         return;
+    }
+
+    $redirect_url = get_option('xarop_maintenance_redirect_url', '');
+    if ($redirect_url) {
+        wp_redirect(esc_url_raw($redirect_url), 302);
+        exit();
     }
 
     $title      = get_option('xarop_maintenance_title', 'Site under maintenance');
